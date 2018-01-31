@@ -111,12 +111,7 @@ class DropDevice(MeasurementDevice):
         elif hparams.unmeasure_type == 'inpaint-tv':
             unmeasure_func = measure_utils.get_inpaint_func_tv()
         elif hparams.unmeasure_type == 'blur':
-            gaussian_filter = measure_utils.get_gaussian_filter(radius=1, size=5)
-            def unmeasure_func(image, mask):
-                blurred = np.zeros_like(image)
-                for c in range(image.shape[2]):
-                    blurred[:, :, c] = signal.convolve2d(image[:, :, c], gaussian_filter, mode='same')
-                return blurred
+            unmeasure_func = measure_utils.get_blur_func()
         else:
             raise NotImplementedError
 
@@ -233,7 +228,7 @@ class ExtractPatch(MeasurementDevice):
             patch = tf.reshape(patch, [1, k, k, hparams.image_dims[-1]])
             patch_list.append(patch)
         patches = tf.concat(patch_list, axis=0)
-        #TODO(abora): Remove padding by using a custom discriminator
+        # TODO(abora): Remove padding by using a custom discriminator
         paddings = measure_utils.get_padding_ep(hparams)
         x_measured = tf.pad(patches, paddings, "CONSTANT", name='x_measured')
         return x_measured

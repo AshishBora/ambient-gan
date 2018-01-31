@@ -3,7 +3,7 @@
 from __future__ import division
 
 import numpy as np
-from scipy import mgrid, ndimage
+from scipy import mgrid, ndimage, signal
 import tensorflow as tf
 import cvxpy
 import cv2
@@ -86,7 +86,7 @@ def get_inpaint_func_tv():
             image_c = image[:, :, c]
             mask_c = mask[:, :, c]
             if np.min(mask_c) > 0:
-                # if mask is all ones
+                # if mask is all ones, no need to inpaint
                 inpainted[:, :, c] = image_c
             else:
                 h, w = image_c.shape
@@ -99,6 +99,22 @@ def get_inpaint_func_tv():
                 inpainted[:, :, c] = inpainted_c_var.value
         return inpainted
     return inpaint_func
+
+
+def get_blur_func():
+    def unmeasure_func(image, mask):
+        gaussian_filter = get_gaussian_filter(radius=1, size=5)
+        blurred = np.zeros_like(image)
+        for c in range(image.shape[2]):
+            image_c = image[:, :, c]
+            mask_c = mask[:, :, c]
+            if np.min(mask_c) > 0:
+                # if mask is all ones, no need to blur
+                blurred[:, :, c] = image_c
+            else:
+                blurred[:, :, c] = signal.convolve2d(image_c, gaussian_filter, mode='same')
+        return blurred
+    return unmeasure_func
 
 
 def get_padding_ep(hparams):

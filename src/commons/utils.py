@@ -1,4 +1,4 @@
-# pylint: disable = C0103, C0111, C0301, R0913, R0903, R0914, E1101, C0103
+# pylint: disable = C0103, C0111, C0301, R0913, R0903, R0914, E1101
 
 from __future__ import division
 
@@ -196,7 +196,7 @@ def get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
     return x_sample_val, x_lossy_val
 
 
-def save_samples2(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val=None):
+def save_samples(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val=None):
     if len(phs) == 3:
         size = int(np.sqrt(hparams.sample_num))
         save_images(x_sample_val, [size, size], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
@@ -219,39 +219,47 @@ def save_samples2(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_m
     print 'Saved samples at epoch {}, batch_num {}'.format(epoch, batch_num)
 
 
+def save_to_pickle(data, pkl_filepath):
+    with open(pkl_filepath, 'wb') as pkl_file:
+        pickle.dump(data, pkl_file)
 
 
-def save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                 mdevice, sess,
-                 epoch, batch_num,
-                 real_vals, x_measured_val=None):
-    x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                                            mdevice, sess, real_vals)
-    if len(phs) == 3:
-        size = int(np.sqrt(hparams.sample_num))
-        save_images(x_sample_val, [size, size], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
-        if epoch == 0:
-            save_images(x_lossy_val, [size, size], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
-            if hparams.train_mode == 'unmeasure':
-                save_images(x_measured_val, [8, 16], './{}/x_measured_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
-                x_measured_val_clipped = np.minimum(np.maximum(x_measured_val, hparams.x_min), hparams.x_max)
-                save_images(x_measured_val_clipped, [8, 16], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+def get_inception_score(p_y_given_x):
+    p_y = np.mean(p_y_given_x, axis=0)
+    terms = p_y_given_x * (np.log(p_y_given_x) - np.log(p_y))
+    kl_div = np.mean(np.sum(terms, axis=1))
+    inception_score = np.exp(kl_div)
+    return inception_score
 
-    else:
-        save_images(x_sample_val, [8, 8], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
-        if epoch == 0:
-            save_images(x_lossy_val, [8, 8], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
-            if hparams.train_mode == 'unmeasure':
-                save_images(x_measured_val, [8, 8], './{}/x_measured_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
-                x_measured_val_clipped = np.minimum(np.maximum(x_measured_val, hparams.x_min), hparams.x_max)
-                save_images(x_measured_val_clipped, [8, 8], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
 
-    print 'Saved samples at epoch {}, batch_num {}'.format(epoch, batch_num)
+def get_inception_data(y_hat_val_list):
+    inception_scores = [get_inception_score(y_hat_val) for y_hat_val in y_hat_val_list]
+    score_mean = np.mean(inception_scores)
+    data = {
+        'y_hat_vals_list': y_hat_val_list,
+        'inception_scores': inception_scores,
+        'inception_score_mean': score_mean,
+    }
+    return data
 
+
+def save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
+                         mdevice, sess, real_vals, inf_net, x_sample_val):
+    y_hat_val_list = []
+    for _ in range(16):
+        x_sample_val, _ = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+                                                mdevice, sess, real_vals)
+        y_hat_val = inf_net.get_y_hat_val(x_sample_val)
+        y_hat_val_list.append(y_hat_val)
+    data = get_inception_data(y_hat_val_list)
+    save_to_pickle(data, hparams.inception_pkl_filepath)
 
 
 def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lossy, real_val_iterator,
-          theta_ph, theta_gen_ph, mdevice, iter_ph):
+          theta_ph, theta_gen_ph, mdevice, iter_ph, inf_def):
+
+    if hparams.dataset == 'mnist':
+        inf_net = inf_def.InferenceNetwork()
 
     # z_ph, x_ph = phs[0], phs[1]
 
@@ -353,13 +361,12 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
 
         # Save samples
         if batch_num % 100 == 1:
-            # save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-            #              mdevice, sess,
-            #              epoch, batch_num,
-            #              real_vals, x_measured_val)
             x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
                                                     mdevice, sess, real_vals)
-            save_samples2(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val)
+            save_samples(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val)
+            if hparams.dataset == 'mnist':
+                save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
+                                     mdevice, sess, real_vals, inf_net, x_sample_val)
 
     # Save final checkpoint
     save_path = os.path.join(hparams.ckpt_dir, 'snapshot')
@@ -380,10 +387,12 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
         x_lossy_val = mdevice.unmeasure_np(hparams, x_measured_val, theta_val)  # unmeasure real
         real_vals[0] = x_lossy_val
 
-    save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                 mdevice, sess,
-                 epoch, batch_num,
-                 real_vals, x_measured_val)
+    x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+                                            mdevice, sess, real_vals)
+    save_samples(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val)
+    if hparams.dataset == 'mnist':
+        save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
+                             mdevice, sess, real_vals, inf_net, x_sample_val)
 
     return sess
 
@@ -416,3 +425,32 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
 # def inverse_transform(images):
 #     return (images+1.)/2.
 
+
+
+
+# def save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+#                  mdevice, sess,
+#                  epoch, batch_num,
+#                  real_vals, x_measured_val=None):
+#     x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+#                                             mdevice, sess, real_vals)
+#     if len(phs) == 3:
+#         size = int(np.sqrt(hparams.sample_num))
+#         save_images(x_sample_val, [size, size], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+#         if epoch == 0:
+#             save_images(x_lossy_val, [size, size], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+#             if hparams.train_mode == 'unmeasure':
+#                 save_images(x_measured_val, [8, 16], './{}/x_measured_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+#                 x_measured_val_clipped = np.minimum(np.maximum(x_measured_val, hparams.x_min), hparams.x_max)
+#                 save_images(x_measured_val_clipped, [8, 16], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+
+#     else:
+#         save_images(x_sample_val, [8, 8], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+#         if epoch == 0:
+#             save_images(x_lossy_val, [8, 8], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+#             if hparams.train_mode == 'unmeasure':
+#                 save_images(x_measured_val, [8, 8], './{}/x_measured_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+#                 x_measured_val_clipped = np.minimum(np.maximum(x_measured_val, hparams.x_min), hparams.x_max)
+#                 save_images(x_measured_val_clipped, [8, 8], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+
+#     print 'Saved samples at epoch {}, batch_num {}'.format(epoch, batch_num)

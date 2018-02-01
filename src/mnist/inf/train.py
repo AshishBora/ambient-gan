@@ -24,7 +24,7 @@ def main():
     # Create the model
     inputs = tf.placeholder(tf.float32, [None, hparams.input_dim])
     targets = tf.placeholder(tf.float32, [None, hparams.output_dim])
-    logits, _, keep_prob = model_def.infer(hparams, inputs, 'inf')
+    logits, _, keep_prob = model_def.infer(inputs, 'inf')
 
     # Define loss and optimizer
     loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=targets, logits=logits))
@@ -75,7 +75,7 @@ def main():
     # Test trained model
     accuracy_val = sess.run(accuracy, feed_dict={inputs: mnist.test.images,
                                                  targets: mnist.test.labels,
-                                                 keep_prob: 0.5})
+                                                 keep_prob: 1.0})
     print 'Test accuracy = {}'.format(accuracy_val)
 
 

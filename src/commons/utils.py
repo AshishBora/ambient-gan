@@ -258,9 +258,6 @@ def save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
 def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lossy, real_val_iterator,
           theta_ph, theta_gen_ph, mdevice, iter_ph, inf_def):
 
-    if hparams.dataset == 'mnist':
-        inf_net = inf_def.InferenceNetwork()
-
     # z_ph, x_ph = phs[0], phs[1]
 
     # Get a new TF session
@@ -295,6 +292,9 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
 
     # Define some constants
     num_batches = hparams.train_size // hparams.batch_size
+
+    if hparams.dataset == 'mnist':
+        inf_net = inf_def.InferenceNetwork()
 
     # Training loop
     for train_iter in range(init_train_iter+1, hparams.max_train_iter):

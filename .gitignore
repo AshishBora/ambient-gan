@@ -6,3 +6,5 @@ transport.sh
 data/
 yyyyyy_results/
 scripts/
+results/
+src/mnist/inf/ckpt/

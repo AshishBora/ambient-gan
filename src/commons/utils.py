@@ -135,16 +135,15 @@ def get_train_ops(hparams, d_loss, g_loss):
     else:
         raise NotImplementedError
 
-    # DISBLING TO REUSE OLD CHECKPOINTS
-    # d_opt = basic_utils.get_optimizer(hparams, hparams.d_lr * lr_decay)
-    # g_opt = basic_utils.get_optimizer(hparams, hparams.g_lr * lr_decay)
-    # d_update_op = d_opt.minimize(d_loss, var_list=d_vars)
-    # g_update_op = g_opt.minimize(g_loss, var_list=g_vars)
+    d_opt = basic_utils.get_optimizer(hparams, hparams.d_lr * lr_decay)
+    g_opt = basic_utils.get_optimizer(hparams, hparams.g_lr * lr_decay)
+    d_update_op = d_opt.minimize(d_loss, var_list=d_vars)
+    g_update_op = g_opt.minimize(g_loss, var_list=g_vars)
 
-    assert hparams.d_lr == hparams.g_lr
-    opt = basic_utils.get_optimizer(hparams, hparams.d_lr * lr_decay)
-    d_update_op = opt.minimize(d_loss, var_list=d_vars)
-    g_update_op = opt.minimize(g_loss, var_list=g_vars)
+    # assert hparams.d_lr == hparams.g_lr
+    # opt = basic_utils.get_optimizer(hparams, hparams.d_lr * lr_decay)
+    # d_update_op = opt.minimize(d_loss, var_list=d_vars)
+    # g_update_op = opt.minimize(g_loss, var_list=g_vars)
 
     return d_update_op, g_update_op, iter_ph
 

@@ -10,11 +10,11 @@ from commons import arch
 from commons import measure
 from commons import hparams_def
 
-from mnist import utils as mnist_utils
-from mnist import gan_def as mnist_gan_def
+from mnist.gen import utils as mnist_utils
+from mnist.gen import gan_def as mnist_gan_def
 
-from celebA import utils as celebA_utils
-from celebA import gan_def as celebA_gan_def
+from celebA.gen import utils as celebA_utils
+from celebA.gen import gan_def as celebA_gan_def
 
 # from cifar10 import utils as cifar10_utils
 # from cifar10 import gan_def as cifar10_gan_def

@@ -32,7 +32,7 @@ d_iters=1,\
 results_dir=./results/,\
 sample_num=64,\
 max_checkpoints=1,\
-max_train_iter=70000,\
+max_train_iter=700,\
 "
 
 python src/main.py \

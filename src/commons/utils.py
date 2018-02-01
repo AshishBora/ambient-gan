@@ -5,10 +5,12 @@ from __future__ import division
 import os
 import scipy.misc
 import numpy as np
+import cPickle as pickle
 import tensorflow as tf
 
 import basic_utils
 import dir_def
+
 # import inception_score
 
 
@@ -255,7 +257,7 @@ def save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
         y_hat_val = inf_net.get_y_hat_val(x_sample_val)
         y_hat_val_list.append(y_hat_val)
     data = get_inception_data(y_hat_val_list)
-    save_to_pickle(data, hparams.inception_pkl_filepath)
+    save_to_pickle(data, hparams.incpt_pkl)
 
 
 def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lossy, real_val_iterator,

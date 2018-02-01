@@ -51,7 +51,7 @@ def main():
     metrics_list = [get_metrics(hparams) for hparams in hparams_list]
 
     df = get_df(hparams_list, metrics_list)
-    df_pkl_path = './results/df_hparams_metrics.pkl'
+    df_pkl_path = './results/df_mnist.pkl'
     basic_utils.save_to_pickle(df, df_pkl_path)
 
 

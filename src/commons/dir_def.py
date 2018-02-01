@@ -5,28 +5,24 @@
 def get_task_dir(hparams):
 
     if hparams.measurement_type in ['drop_independent', 'drop_row', 'drop_col', 'drop_rowcol']:
-        task_dir = '{}_{}_p{}/'.format(
-            hparams.dataset,
+        task_dir = '{}_p{}/'.format(
             hparams.measurement_type,
             hparams.drop_prob,
         )
     elif hparams.measurement_type in ['drop_patch', 'keep_patch', 'extract_patch']:
-        task_dir = '{}_{}_k{}/'.format(
-            hparams.dataset,
+        task_dir = '{}_k{}/'.format(
             hparams.measurement_type,
             hparams.patch_size,
         )
     elif hparams.measurement_type in ['blur_addnoise']:
-        task_dir = '{}_{}_br{}_bfs{}_anstd{}/'.format(
-            hparams.dataset,
+        task_dir = '{}_br{}_bfs{}_anstd{}/'.format(
             hparams.measurement_type,
             hparams.blur_radius,
             hparams.blur_filter_size,
             hparams.additive_noise_std,
         )
     elif hparams.measurement_type in ['pad_rotate_project', 'pad_rotate_project_with_theta']:
-        task_dir = '{}_{}_na{}/'.format(
-            hparams.dataset,
+        task_dir = '{}_na{}/'.format(
             hparams.measurement_type,
             hparams.num_angles,
         )
@@ -117,9 +113,10 @@ def get_opt_dir(hparams):
 
 
 def get_expt_dir(hparams):
+    dataset_dir = '{}/'.format(hparams.dataset)
     task_dir = get_task_dir(hparams)
     mode_dir = get_mode_dir(hparams)
     model_dir = get_model_dir(hparams)
     opt_dir = get_opt_dir(hparams)
-    expt_dir = task_dir + mode_dir + model_dir + opt_dir
+    expt_dir = dataset_dir + task_dir + mode_dir + model_dir + opt_dir
     return expt_dir

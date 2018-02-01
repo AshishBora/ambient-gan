@@ -79,3 +79,18 @@ def get_optimizer(hparams, lr):
         return tf.train.AdagradOptimizer(lr)
     else:
         raise Exception('Optimizer {} not supported'.format(hparams.opt_type))
+
+
+def load_if_pickled(pkl_filepath):
+    """Load if the pickle file exists. Else return empty dict"""
+    if os.path.isfile(pkl_filepath):
+        with open(pkl_filepath, 'rb') as pkl_file:
+            data = pickle.load(pkl_file)
+    else:
+        data = {}
+    return data
+
+
+def save_to_pickle(data, pkl_filepath):
+    with open(pkl_filepath, 'wb') as pkl_file:
+        pickle.dump(data, pkl_file)

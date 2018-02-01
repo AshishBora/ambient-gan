@@ -224,11 +224,6 @@ def save_samples(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_me
     print 'Saved samples at epoch {}, batch_num {}'.format(epoch, batch_num)
 
 
-def save_to_pickle(data, pkl_filepath):
-    with open(pkl_filepath, 'wb') as pkl_file:
-        pickle.dump(data, pkl_file)
-
-
 def get_inception_score(p_y_given_x):
     p_y = np.mean(p_y_given_x, axis=0)
     terms = p_y_given_x * (np.log(p_y_given_x) - np.log(p_y))
@@ -257,7 +252,7 @@ def save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
         y_hat_val = inf_net.get_y_hat_val(x_sample_val)
         y_hat_val_list.append(y_hat_val)
     data = get_inception_data(y_hat_val_list)
-    save_to_pickle(data, hparams.incpt_pkl)
+    basic_utils.save_to_pickle(data, hparams.incpt_pkl)
     print 'Saved inception data'
 
 

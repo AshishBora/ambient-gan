@@ -196,20 +196,8 @@ def get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
     return x_sample_val, x_lossy_val
 
 
-def save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                 mdevice, sess,
-                 epoch, batch_num,
-                 real_vals, x_measured_val=None):
+def save_samples2(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val=None):
     if len(phs) == 3:
-        # y_vals = sample_y_val(hparams, 'fixed', hparams.sample_num)
-        # rng = np.random.RandomState(0)
-        # x_sample_val, x_lossy_val = sample_cond(hparams, y_vals, mdevice,
-        #                                         phs, theta_ph, real_vals,
-        #                                         x_sample, x_lossy,
-        #                                         sess, hparams.sample_num, rng)
-        x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                                                mdevice, sess, real_vals)
-
         size = int(np.sqrt(hparams.sample_num))
         save_images(x_sample_val, [size, size], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
         if epoch == 0:
@@ -220,17 +208,36 @@ def save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
                 save_images(x_measured_val_clipped, [8, 16], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
 
     else:
-        # z_ph, x_ph = phs[0], phs[1]
-        # rng = np.random.RandomState(0)
-        # z_val = sample_z_val(hparams, rng)
-        # feed_dict = {z_ph: z_val, x_ph: real_vals[0]}
-        # feed_dict[theta_ph] = mdevice.sample_theta(hparams)
-        # feed_dict.pop(None, None)
-        # x_sample_val = sess.run(x_sample, feed_dict=feed_dict)
-        # x_lossy_val = sess.run(x_lossy, feed_dict=feed_dict)
-        x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                                                mdevice, sess, real_vals)
+        save_images(x_sample_val, [8, 8], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+        if epoch == 0:
+            save_images(x_lossy_val, [8, 8], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+            if hparams.train_mode == 'unmeasure':
+                save_images(x_measured_val, [8, 8], './{}/x_measured_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+                x_measured_val_clipped = np.minimum(np.maximum(x_measured_val, hparams.x_min), hparams.x_max)
+                save_images(x_measured_val_clipped, [8, 8], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
 
+    print 'Saved samples at epoch {}, batch_num {}'.format(epoch, batch_num)
+
+
+
+
+def save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+                 mdevice, sess,
+                 epoch, batch_num,
+                 real_vals, x_measured_val=None):
+    x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+                                            mdevice, sess, real_vals)
+    if len(phs) == 3:
+        size = int(np.sqrt(hparams.sample_num))
+        save_images(x_sample_val, [size, size], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+        if epoch == 0:
+            save_images(x_lossy_val, [size, size], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+            if hparams.train_mode == 'unmeasure':
+                save_images(x_measured_val, [8, 16], './{}/x_measured_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+                x_measured_val_clipped = np.minimum(np.maximum(x_measured_val, hparams.x_min), hparams.x_max)
+                save_images(x_measured_val_clipped, [8, 16], './{}/x_measured_clipped_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
+
+    else:
         save_images(x_sample_val, [8, 8], './{}/x_sample_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
         if epoch == 0:
             save_images(x_lossy_val, [8, 8], './{}/x_lossy_{:02d}_{:04d}.png'.format(hparams.sample_dir, epoch, batch_num))
@@ -346,10 +353,13 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
 
         # Save samples
         if batch_num % 100 == 1:
-            save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                         mdevice, sess,
-                         epoch, batch_num,
-                         real_vals, x_measured_val)
+            # save_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+            #              mdevice, sess,
+            #              epoch, batch_num,
+            #              real_vals, x_measured_val)
+            x_sample_val, x_lossy_val = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
+                                                    mdevice, sess, real_vals)
+            save_samples2(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val)
 
     # Save final checkpoint
     save_path = os.path.join(hparams.ckpt_dir, 'snapshot')

@@ -1,6 +1,7 @@
 .DS_Store
 *.pyc
 .ipynb_checkpoints/
+.idea/
 
 transport.sh
 log.pkl

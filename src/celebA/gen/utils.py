@@ -35,7 +35,7 @@ def get_image(image_path, input_height, input_width, resize_height=64, resize_wi
 class RealValIterator(object):
 
     def __init__(self):
-        # Get the data filenames
+        # Get the data file names
         self.datafiles = glob.glob('./data/celebA/*.jpg')
         self.total = len(self.datafiles)
         print 'Length of data = {}\n'.format(self.total)
@@ -57,7 +57,7 @@ class RealValIterator(object):
 
         if start < stop:
             batch_files = self.datafiles[start:stop]
-        elif stop <= start:
+        else:
             batch_files = self.datafiles[start:] + self.datafiles[:stop]
 
         x_real = [get_image(batch_file,

@@ -86,7 +86,7 @@ def main():
             metrics_list.append(metrics)
 
     df = get_df(hparams_list, metrics_list)
-    df_pkl_path = './results/df_cifar10.pkl'
+    df_pkl_path = './results/df_cifar.pkl'
     basic_utils.save_to_pickle(df, df_pkl_path)
 
 

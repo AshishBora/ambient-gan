@@ -19,7 +19,7 @@ def get_script_text(base_script, setting_dict, format_string):
     # Copy base script text
     script_text = copy.deepcopy(base_script)
 
-    # Change hyperparam values
+    # Change hparam values
     for hparam_name in setting_dict.keys():
         idx = find_overlap_idx(script_text, hparam_name)
         script_text[idx] = format_string.format(hparam_name, setting_dict[hparam_name])

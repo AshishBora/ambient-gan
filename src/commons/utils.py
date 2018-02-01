@@ -39,9 +39,11 @@ def setup_vals(hparams):
 
     expt_dir = dir_def.get_expt_dir(hparams)
     hparams.hparams_dir = hparams.results_dir + 'hparams/' + expt_dir
-    hparams.ckpt_dir    = hparams.results_dir + 'ckpt/'    + expt_dir
     hparams.summary_dir = hparams.results_dir + 'summ/'    + expt_dir
     hparams.sample_dir  = hparams.results_dir + 'samples/' + expt_dir
+    hparams.ckpt_dir    = hparams.results_dir + 'ckpt/'    + expt_dir
+    hparams.incpt_dir   = hparams.results_dir + 'incpt/'   + expt_dir
+    hparams.incpt_pkl   = hparams.incpt_dir + 'score.pkl'
 
 
 def setup_dirs(hparams):
@@ -50,6 +52,7 @@ def setup_dirs(hparams):
     basic_utils.set_up_dir(hparams.ckpt_dir)
     basic_utils.set_up_dir(hparams.summary_dir)
     basic_utils.set_up_dir(hparams.sample_dir)
+    basic_utils.set_up_dir(hparams.incpt_dir)
 
 
 def save_images(images, size, image_path):

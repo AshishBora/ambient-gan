@@ -249,15 +249,16 @@ def get_inception_data(y_hat_val_list):
 
 
 def save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
-                         mdevice, sess, real_vals, inf_net, x_sample_val):
+                        mdevice, sess, real_vals, inf_net, x_sample_val):
     y_hat_val_list = []
     for _ in range(16):
         x_sample_val, _ = get_samples(hparams, phs, theta_ph, x_sample, x_lossy,
-                                                mdevice, sess, real_vals)
+                                      mdevice, sess, real_vals)
         y_hat_val = inf_net.get_y_hat_val(x_sample_val)
         y_hat_val_list.append(y_hat_val)
     data = get_inception_data(y_hat_val_list)
     save_to_pickle(data, hparams.incpt_pkl)
+    print 'Saved inception data'
 
 
 def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lossy, real_val_iterator,
@@ -371,7 +372,7 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
             save_samples(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val)
             if hparams.dataset == 'mnist':
                 save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
-                                     mdevice, sess, real_vals, inf_net, x_sample_val)
+                                    mdevice, sess, real_vals, inf_net, x_sample_val)
 
     # Save final checkpoint
     save_path = os.path.join(hparams.ckpt_dir, 'snapshot')
@@ -397,7 +398,7 @@ def train(hparams, phs, d_update_op, g_update_op, d_loss, g_loss, x_sample, x_lo
     save_samples(hparams, phs, epoch, batch_num, x_sample_val, x_lossy_val, x_measured_val)
     if hparams.dataset == 'mnist':
         save_inception_data(hparams, phs, theta_ph, x_sample, x_lossy,
-                             mdevice, sess, real_vals, inf_net, x_sample_val)
+                            mdevice, sess, real_vals, inf_net, x_sample_val)
 
     return sess
 

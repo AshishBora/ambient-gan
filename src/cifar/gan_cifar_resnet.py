@@ -486,7 +486,7 @@ with tf.Session() as session:
 
     # Attempt to restore variables from checkpoint
     init_train_iter = amb_basic_utils.try_restore(AMB_HPARAMS, session, model_saver)
-    amb_inception_list_path = AMB_HPARAMS.metrics_dir + 'inception.pkl'
+    amb_inception_list_path = AMB_HPARAMS.incpt_pkl
     if os.path.exists(amb_inception_list_path):
         with open(amb_inception_list_path, 'rb') as f:
             amb_inception_list = pickle.load(f)
@@ -574,8 +574,8 @@ with tf.Session() as session:
             generate_image(iteration, _data)
 
         if (iteration < 500) or (iteration % 1000 == 999):
-            lib.plot.flush(AMB_HPARAMS.metrics_dir)
-            with open(AMB_HPARAMS.metrics_dir + 'inception.pkl', 'wb') as f:
+            lib.plot.flush(AMB_HPARAMS.incpt_dir)
+            with open(AMB_HPARAMS.incpt_pkl, 'wb') as f:
                 pickle.dump(amb_inception_list, f)
 
         lib.plot.tick()
@@ -590,6 +590,6 @@ with tf.Session() as session:
     lib.plot.plot('inception_50k', inception_score[0])
     lib.plot.plot('inception_50k_std', inception_score[1])
     amb_inception_list.append((AMB_HPARAMS.max_train_iter-1, inception_score))
-    lib.plot.flush(AMB_HPARAMS.metrics_dir)
-    with open(AMB_HPARAMS.metrics_dir + 'inception.pkl', 'wb') as f:
+    lib.plot.flush(AMB_HPARAMS.incpt_dir)
+    with open(AMB_HPARAMS.incpt_pkl, 'wb') as f:
         pickle.dump(amb_inception_list, f)

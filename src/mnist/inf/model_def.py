@@ -1,6 +1,10 @@
 # pylint: disable = C0103, C0111, C0301, R0913, R0903, R0914, E1101
 
-"""Define the inference model"""
+"""Define the inference model
+
+The network definition and some functions are from
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/mnist/mnist_deep.py
+"""
 
 import tensorflow as tf
 
@@ -41,19 +45,6 @@ def bias_variable(name, shape):
 
 
 def infer(inputs, scope_name='inf'):
-
-    """deepnn builds the graph for a deep net for classifying digits.
-
-    Args:
-        x: an input tensor with the dimensions (N_examples, 784), where 784 is the
-        number of pixels in a standard MNIST image.
-
-    Returns:
-        A tuple (y, keep_prob). y is a tensor of shape (N_examples, 10), with values
-        equal to the logits of classifying the digit into one of 10 classes (the
-        digits 0-9). keep_prob is a scalar placeholder for the probability of
-        dropout.
-    """
 
     with tf.variable_scope(scope_name):
 

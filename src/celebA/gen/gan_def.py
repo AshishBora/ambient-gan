@@ -6,6 +6,10 @@ import wgan_utils
 
 
 def generator_dcgan(hparams, z, scope_name, train, reuse):
+    """
+    The architecture is from
+    https://github.com/carpedm20/DCGAN-tensorflow
+    """
 
     gf_dim = 64  # dimension of generator filters in first conv layer
 
@@ -41,6 +45,10 @@ def generator_dcgan(hparams, z, scope_name, train, reuse):
 
 
 def discriminator_dcgan(hparams, x, scope_name, train, reuse):
+    """
+    The architecture is from
+    https://github.com/carpedm20/DCGAN-tensorflow
+    """
 
     df_dim = 64  # dimension of discriminator filters in first conv layer
 
@@ -91,6 +99,10 @@ def discriminator_fc(hparams, x, scope_name, train, reuse):  # pylint: disable =
 
 
 def generator_wgangp(hparams, z, scope_name, train, reuse):  # pylint: disable = W0613
+    """
+    The architecture is from
+    https://github.com/shekkizh/WassersteinGAN.tensorflow
+    """
 
     gen_dim = 16
     dims = [64 * gen_dim, 64 * gen_dim // 2, 64 * gen_dim // 4, 64 * gen_dim // 8, 3]
@@ -134,6 +146,10 @@ def generator_wgangp(hparams, z, scope_name, train, reuse):  # pylint: disable =
 
 
 def discriminator_wgangp(hparams, x, scope_name, train, reuse):  # pylint: disable = W0613
+    """
+    The architecture is from
+    https://github.com/shekkizh/WassersteinGAN.tensorflow
+    """
 
     dims = [3, 64, 64 * 2, 64 * 4, 64 * 8, 1]
     activation = tf.nn.relu

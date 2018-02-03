@@ -1,3 +1,8 @@
+"""
+Some functions here are based on:
+https://github.com/carpedm20/DCGAN-tensorflow/blob/master/utils.py
+"""
+
 # pylint: disable = C0103, C0111, C0301, R0913, R0903, R0914, E1101
 
 import glob

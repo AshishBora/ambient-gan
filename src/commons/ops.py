@@ -1,6 +1,11 @@
 # pylint: disable = C0103, C0111, C0301, R0913, R0903
-import tensorflow as tf
 
+"""
+This file is based on
+https://github.com/carpedm20/DCGAN-tensorflow/blob/master/ops.py
+"""
+
+import tensorflow as tf
 
 class batch_norm(object):
     def __init__(self, epsilon=1e-5, momentum=0.9, name="batch_norm"):

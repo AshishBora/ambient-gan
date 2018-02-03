@@ -20,6 +20,10 @@ def LeakyReLU(x, alpha=0.2):
 
 
 def generator_dcgan(hparams, y, z, scope_name, train, reuse):
+    """
+    The architecture is from
+    https://github.com/carpedm20/DCGAN-tensorflow
+    """
 
     s = 28
     gf_dim = 64  # dimension of generator filters in first conv layer
@@ -57,6 +61,10 @@ def generator_dcgan(hparams, y, z, scope_name, train, reuse):
 
 
 def discriminator_dcgan(hparams, x, y, scope_name, train, reuse):
+    """
+    The architecture is from
+    https://github.com/carpedm20/DCGAN-tensorflow
+    """
 
     df_dim = 64  # dimension of discriminator filters in first conv layer
     dfc_dim = 1024  # dimension of discriminator units for fully connected layer
@@ -134,6 +142,10 @@ def discriminator_fc(hparams, x, scope_name, train, reuse):  # pylint: disable =
 
 
 def generator_wgangp(hparams, z, scope_name, train, reuse):  # pylint: disable = W0613
+    """
+    The architecture is from
+    https://github.com/igul222/improved_wgan_training/blob/master/gan_mnist.py
+    """
 
     DIM = 64 # Model dimensionality
     assert hparams.z_dim == 128
@@ -164,6 +176,10 @@ def generator_wgangp(hparams, z, scope_name, train, reuse):  # pylint: disable =
 
 
 def discriminator_wgangp(hparams, x, scope_name, train, reuse):  # pylint: disable = W0613
+    """
+    The architecture is from
+    https://github.com/igul222/improved_wgan_training/blob/master/gan_mnist.py
+    """
 
     DIM = 64 # Model dimensionality
 

@@ -1,3 +1,8 @@
+"""
+This file is from
+https://github.com/shekkizh/WassersteinGAN.tensorflow/blob/master/utils.py
+"""
+
 __author__ = 'shekkizh'
 # Utils used with tensorflow implemetation
 import tensorflow as tf

@@ -1,5 +1,8 @@
 """Train a network on MNIST.
-For best results, run this file from the same folder that contains it.
+
+Major parts of the code are from
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/mnist/mnist_deep.py
+
 """
 
 from __future__ import division

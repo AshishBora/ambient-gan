@@ -1,6 +1,11 @@
 # pylint: disable = C0103, C0111, C0301, R0913, R0903, R0914, E1101
 
-"""WGAN-GP ResNet for CIFAR-10"""
+"""WGAN-GP ResNet for CIFAR-10.
+
+This file is a modified version of
+https://github.com/igul222/improved_wgan_training/blob/master/gan_cifar_resnet.py
+
+"""
 
 import cPickle as pickle
 

@@ -36,7 +36,7 @@ This will create scripts for all the experiments in the paper.
 [Optional] If you want to run only a subset of experiments you can define the grid in `./create_scripts/DATASET_NAME/grid_*.sh` or if you wish to tweak a lot of parameters, you can change `./create_scripts/DATASET_NAME/base_script.sh`. Then run `./create_scripts/create_scripts.sh` as above to create the corresponding scripts (remember to remove any previous files from `./scripts/`)
 
 
-Run experiemnts
+Run experiments
 ---
 
 We provide scripts to train on multiple GPUs in parallel. For example, if you wish to use 4 GPUs, you can run:
@@ -65,4 +65,3 @@ python src/aggregator_cifar.py
 This will create pickle files in `./results/` with the relevant data in a Pandas dataframe.
 
 Now use the ipython notebooks `./plotting_mnist.ipynb` and `./plotting_cifar.ipynb` to get the relevant plots. The generated plots are also saved to `./results/plots/` (make sure this directory exists)
-

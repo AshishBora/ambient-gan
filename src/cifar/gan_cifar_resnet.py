@@ -5,6 +5,7 @@
 This file is a modified version of
 https://github.com/igul222/improved_wgan_training/blob/master/gan_cifar_resnet.py
 
+It comes with the following license: https://github.com/igul222/improved_wgan_training/blob/master/LICENSE
 """
 
 import cPickle as pickle

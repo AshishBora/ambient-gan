@@ -1,6 +1,8 @@
 """
 This library is from
 https://github.com/igul222/improved_wgan_training/tree/master/tflib
+
+It comes with the following license: https://github.com/igul222/improved_wgan_training/blob/master/LICENSE
 """
 
 import numpy as np

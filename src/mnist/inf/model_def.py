@@ -4,6 +4,9 @@
 
 The network definition and some functions are from
 https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/mnist/mnist_deep.py
+
+It comes with the following license: https://github.com/tensorflow/tensorflow/blob/master/LICENSE
+
 """
 
 import tensorflow as tf

@@ -23,6 +23,7 @@ def generator_dcgan(hparams, y, z, scope_name, train, reuse):
     """
     The architecture is from
     https://github.com/carpedm20/DCGAN-tensorflow
+    License: https://github.com/carpedm20/DCGAN-tensorflow/blob/master/LICENSE
     """
 
     s = 28
@@ -64,6 +65,7 @@ def discriminator_dcgan(hparams, x, y, scope_name, train, reuse):
     """
     The architecture is from
     https://github.com/carpedm20/DCGAN-tensorflow
+    License: https://github.com/carpedm20/DCGAN-tensorflow/blob/master/LICENSE
     """
 
     df_dim = 64  # dimension of discriminator filters in first conv layer
@@ -145,6 +147,7 @@ def generator_wgangp(hparams, z, scope_name, train, reuse):  # pylint: disable =
     """
     The architecture is from
     https://github.com/igul222/improved_wgan_training/blob/master/gan_mnist.py
+    License: https://github.com/igul222/improved_wgan_training/blob/master/LICENSE
     """
 
     DIM = 64 # Model dimensionality
@@ -179,6 +182,7 @@ def discriminator_wgangp(hparams, x, scope_name, train, reuse):  # pylint: disab
     """
     The architecture is from
     https://github.com/igul222/improved_wgan_training/blob/master/gan_mnist.py
+    License: https://github.com/igul222/improved_wgan_training/blob/master/LICENSE
     """
 
     DIM = 64 # Model dimensionality

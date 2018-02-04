@@ -3,6 +3,8 @@
 """
 This file is based on
 https://github.com/carpedm20/DCGAN-tensorflow/blob/master/ops.py
+
+It comes with the following license: https://github.com/carpedm20/DCGAN-tensorflow/blob/master/LICENSE
 """
 
 import tensorflow as tf

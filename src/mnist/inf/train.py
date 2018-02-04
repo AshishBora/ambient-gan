@@ -3,6 +3,7 @@
 Major parts of the code are from
 https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/mnist/mnist_deep.py
 
+It comes with the following license: https://github.com/tensorflow/tensorflow/blob/master/LICENSE
 """
 
 from __future__ import division

@@ -1,6 +1,8 @@
 """
 This file is from
 https://github.com/shekkizh/WassersteinGAN.tensorflow/blob/master/utils.py
+
+It comes with the following license: https://github.com/shekkizh/WassersteinGAN.tensorflow/blob/master/LICENSE
 """
 
 __author__ = 'shekkizh'

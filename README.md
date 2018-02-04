@@ -1,6 +1,23 @@
 # AmbientGAN: Generative models from lossy measurements
 
-Code to reproduce results from the paper [AmbientGAN: Generative models from lossy measurements](https://openreview.net/forum?id=Hy7fDog0b)
+This repository provides code to reproduce results from the paper [AmbientGAN: Generative models from lossy measurements](https://openreview.net/forum?id=Hy7fDog0b).
+
+Here are a few example results:
+
+Measured | Baseline | AmbientGAN (ours)
+---------------|-----------------|------------
+<img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_drop_patch/measured.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_drop_patch/inpaint_ns.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_drop_patch/ambient.png" width="300">
+<img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_blur_addnoise/measured.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_blur_addnoise/wiener_deconv.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_blur_addnoise/ambient.png" width="300">
+<img src="https://github.com/AshishBora/ambient-gan/blob/master/images/cifar_drop_independent/measured.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/cifar_drop_independent/unmeasure_blur.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/cifar_drop_independent/ambient.png" width="300">
+
+Few more samples from AmbientGAN models
+
+Pad-Rotate-Project | Pad-Rotate-Project-theta
+---------------|-----------------
+<img src="https://github.com/AshishBora/ambient-gan/blob/master/images/mnist_pad_rotate_project/ambient.png" width="200"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/mnist_pad_rotate_project_with_theta/ambient.png" width="200">
+
+
+The rest of the README describes how to reproduce the results:
 
 Get the data
 ---

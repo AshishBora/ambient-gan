@@ -2,6 +2,10 @@
 
 This repository provides code to reproduce results from the paper [AmbientGAN: Generative models from lossy measurements](https://openreview.net/forum?id=Hy7fDog0b).
 
+The training setup is as in the following diagram:
+
+<img src="https://github.com/AshishBora/ambient-gan/blob/master/setup.png" width="400">
+
 Here are a few example results:
 
 Measured | Baseline | AmbientGAN (ours)
@@ -10,7 +14,7 @@ Measured | Baseline | AmbientGAN (ours)
 <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_blur_addnoise/measured.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_blur_addnoise/wiener_deconv.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/celebA_blur_addnoise/ambient.png" width="300">
 <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/cifar_drop_independent/measured.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/cifar_drop_independent/unmeasure_blur.png" width="300"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/cifar_drop_independent/ambient.png" width="300">
 
-Few more samples from AmbientGAN models
+Few more samples from AmbientGAN models trained with 1-D projections:
 
 Pad-Rotate-Project | Pad-Rotate-Project-theta
 ---------------|-----------------

@@ -7,7 +7,6 @@ import copy
 import tensorflow as tf
 import numpy as np
 from scipy import signal
-# import cv2
 
 import amb_measure_utils
 

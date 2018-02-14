@@ -1,0 +1,9 @@
+tensorflow >= 1.4.0
+matplotlib
+scipy
+numpy
+cvxpy
+scikit-learn
+tqdm
+opencv-python
+pandas

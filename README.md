@@ -21,7 +21,23 @@ Pad-Rotate-Project | Pad-Rotate-Project-theta
 <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/mnist_pad_rotate_project/ambient.png" width="200"> | <img src="https://github.com/AshishBora/ambient-gan/blob/master/images/mnist_pad_rotate_project_with_theta/ambient.png" width="200">
 
 
-The rest of the README describes how to reproduce the results:
+The rest of the README describes how to reproduce the results.
+
+Requirements
+---
+- Python 2.7
+- Tensorflow >= 1.4.0
+- matplotlib
+- scipy
+- numpy
+- cvxpy
+- scikit-learn
+- tqdm
+- opencv-python
+- pandas
+
+For `pip` installation, use ```$ pip install -r requirements.txt```
+
 
 Get the data
 ---
